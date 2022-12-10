@@ -1,0 +1,87 @@
+# small output
+--max-columns=150
+--max-columns-preview
+
+# add 'web' type
+--type-add
+web:*.{html,css,js,jsx,ts,tsx,json}*
+
+# start all searches in the home directory
+# --glob
+# /Developer/*
+
+# ignore git files
+--glob
+!git/*
+
+# ignore mac application files
+--glob
+!/Library/*
+
+--glob
+!/Applications/*
+
+--glob
+!/Movies/*
+
+--glob
+!/Music/*
+
+--glob
+!/Pictures/*
+
+# ignore sandbox code
+--glob
+!/Developer/Sandbox/*
+
+# ignore python files
+--glob
+!.pyenv/*
+
+# ignore local temporary files
+--glob
+!.local/*
+
+# ignore zsh
+--glob
+!.zsh_sessions/*
+
+# ignore local cache
+--glob
+!.cache/*
+
+# ignore npm cache
+--glob
+!.npm/*
+
+# ignore docker cache
+--glob
+!.docker/*
+
+# ignore cargo cache
+--glob
+!.cargo/*
+
+# ignore nvm cache
+--glob
+!.nvm/*
+
+# ignore rust cache
+--glob
+!.rustup/*
+
+# ignore node modules
+--glob
+!node_modules/*
+
+# Set the colors.
+--colors=line:fg:cyan
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:underline
+--colors=match:fg:black
+--colors=match:bg:yellow
+--colors=match:style:bold
+
+# case insensitive
+--smart-case
