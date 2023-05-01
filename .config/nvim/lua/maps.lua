@@ -1,27 +1,19 @@
 local map = vim.api.nvim_set_keymap
+local options = { noremap = true, silent = true }
 
 -- map the leader key
 map('n', '<Space>', '', {})
 vim.g.mapleader = ' '  -- 'vim.g' sets global variables
 
 
-options = { noremap = true, silent = true }
-
 -- clear search highlight
 map('n', '<leader>ch', ':nohlsearch<cr>', options)
-
--- buffer tabs browser-like navigation (kitty needs to be configured properly for this to work)
-map('n', '<CHAR-0x0b>]', '<D-]>', {})
-map('n', '<CHAR-0x0b>[', '<D-[>', {})
-map('n', '<C-D-]>', ':BufferNext<cr>', options)
-map('n', '<C-D-[>', ':BufferPrevious<cr>', options)
 
 -- todo: shift h+l beginning of line -> previous/next beginning/end of line
 
 -- go to end of previous word
-map('n', 'be', 'ge', options)
+-- map('n', 'be', 'ge', options)
 
-map('n', '<leader>cb', ':BufferClose<cr>', options) -- close buffer
 map('n', '<leader>qq', ':q<cr>', options) -- quit
 map('n', '<leader>qa', ':qa<cr>', options) -- quit all
 map('n', '<leader>qh', ':q!<cr>', options) -- quit hard
@@ -29,13 +21,8 @@ map('n', '<leader>wq', ':wq<cr>', options) -- write quit
 map('n', '<leader>wqa', ':wqa<cr>', options) -- write quit all
 
 -- "kuick" (quick) exit commands
-map('i', '<leader>wk', '<esc>:w<cr> e', options)
-map('i', '<leader>jk', '<esc> e', options)
-
--- file tree
-map('n', '<leader>fo', ':NvimTreeFindFile<cr>', options)
-map('n', '<leader>fto', ':NvimTreeOpen<cr>', options)
-map('n', '<leader>ftc', ':NvimTreeClose<cr>', options)
+map('i', '<leader>kw', '<esc>:w<cr>', options)
+map('i', '<leader>kk', '<esc>', options)
 
 -- terminal (kitty) + neovim navigation
 map('n', '<C-l>', ':KittyNavigateRight<cr>', options)
@@ -67,10 +54,3 @@ map('n', 'X', 'D', options)
 map('n', 's', '<Cmd>:SubversiveSubstitute<CR>', options)
 map('n', 'ss', '<Cmd>:SubversiveSubstituteLine<CR>', options)
 map('n', 'S', '<Cmd>:SubversiveSubstituteToEndOfLine<CR>', options)
-
--- file search (telescope)
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>sf', builtin.find_files, {})
-vim.keymap.set('n', '<leader>sg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>sb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>sh', builtin.help_tags, {})

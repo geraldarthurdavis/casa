@@ -6,7 +6,7 @@ local specs = require('specs')
 
 specs.setup{ 
     show_jumps  = true,
-    min_jump = 30,
+    min_jump = 20,
     popup = {
         delay_ms = 0, -- delay before popup displays
         inc_ms = 10, -- time increments used for fade/resize effects 

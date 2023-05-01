@@ -1,9 +1,11 @@
+-- crispy comments 🥓
+
 local g = vim.g -- global options
 local map = vim.api.nvim_set_keymap
 
-g.NERDCreateDefaultMappings = 0
+g.NERDCreateDefaultMappings = 0 -- we'll configure our own commenter mappings
 
-options = { noremap = true, silent = true }
+local options = { noremap = true, silent = true }
 
-map('n', '<leader>cc', '<Plug>NERDCommenterComment<CR>', options)
-map('x', '<leader>cc', '<Plug>NERDCommenterComment<CR>', options)
+map('n', '<leader>cc', '<Plug>NERDCommenterToggle<CR>', options)
+map('x', '<leader>cc', '<Plug>NERDCommenterToggle<CR>', options)

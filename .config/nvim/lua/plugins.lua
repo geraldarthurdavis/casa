@@ -11,10 +11,9 @@ return require('packer').startup(function()
   use "b0o/mapx.nvim" -- easier mapping settings
   use "edluffy/hologram.nvim" -- image previewing
   use 'sainnhe/edge' -- edge dark theme
-  use 'nvim-treesitter/nvim-treesitter-refactor' -- highlight definitions and usages
   use 'drybalka/tree-climber.nvim' -- navigate around highlighting
   use 'lewis6991/spellsitter.nvim' -- spell checker
-  use 'andymass/vim-matchup' -- insert matching pair of quotes, brackets, etc.
+  use 'andymass/vim-matchup' -- block/bracket-wise movement
   use "svermeulen/vim-cutlass" -- override vim's default cut (`dd` in Normal, etc.) behavior
   use "svermeulen/vim-subversive" -- substitues with text objects
   use "windwp/nvim-autopairs" -- open/closing brackets, parentheses, braces etc.
@@ -28,6 +27,9 @@ return require('packer').startup(function()
   use 'simrat39/rust-tools.nvim' -- Rust debugging
   use 'edluffy/specs.nvim' -- animate cursor when moving
   use 'kyazdani42/nvim-web-devicons' -- nicer icons for file trees, diagnostic lists, etc.
+  use 'jose-elias-alvarez/typescript.nvim' -- typescript
+  use 'junegunn/goyo.vim' -- writing in vim
+  use 'bfredl/nvim-ipy'
 
   -- easy motion (vimium style navigation)
   use {
@@ -69,7 +71,7 @@ return require('packer').startup(function()
   use 'tjdevries/colorbuddy.vim'
 
   -- kitty navigation integration
-  use 'knubie/vim-kitty-navigator'
+  use {'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/' } 
 
   -- file tree
   use {
@@ -100,7 +102,7 @@ return require('packer').startup(function()
     } end
   }
 
-  -- syntax highlighting
+  -- syntax highlighting, refactoring
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -127,11 +129,13 @@ return require('packer').startup(function()
     } end
   }
 
-  -- file search
+  -- searching
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
+
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' } -- faster searching
 
   use "SmiteshP/nvim-navic" -- show language specific context in status line
   use 'lewis6991/nvim-treesitter-context' -- show context in winbar (ie within function or struct)

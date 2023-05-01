@@ -6,7 +6,7 @@ require('plugins')  -- packer plugins
 require('lsp')  -- language servers
 require('autocomplete')  -- completion
 require('snippets')  -- snippet settings
-require('search')  -- file search
+require('search')  -- searching
 require('filestypes') -- faster/customer file type
 require('mail') -- email
 require('filetree') -- file tree settings
@@ -18,3 +18,8 @@ require('gitsigns') -- gitsigns plugin configuration
 require('rust') -- configure Rust debugger
 require('cursor') -- customize the cursor
 require('diagnostics') -- diagnostics settings
+require('tabs') -- buffers & tab viewing
+require('splits') -- lickity-split splits
+require('refactoring') -- easy & robust refactoring
+require('replace') -- replacing seleted text (outside refactoring)
+require('media') -- images, videos, audio

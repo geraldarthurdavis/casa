@@ -29,7 +29,7 @@ export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border none --info=inline --preview 'bat --color=always {}' --preview-window '~3'" # style fzf ui
 
 # source cargo
 . "$HOME/.cargo/env"
@@ -43,4 +43,7 @@ export PATH="/usr/local/anaconda3/bin:$PATH"
 # ruby
 export PATH="$HOME/.rbenv/bin:$PATH"
 
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export LC_TYPE=en_US.UTF-8

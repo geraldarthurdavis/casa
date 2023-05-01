@@ -49,12 +49,14 @@ eval "kitty @ set-colors --all --configured -c $CONFIG_HOME/kitty/colors/$(cat $
 precmd () {print -Pn "\e]0;%~\a"}
 
 # configuration files (casa)
-alias casa="edit $CASA_CONFIG/README.md"
-alias casa-tmux="edit $CASA_CONFIG/.config/.tmux.conf"
+alias casa="cd $CASA_CONFIG && edit $CASA_CONFIG/README.md"
 
-# vim
+# editor
 alias v="$EDITOR"
 alias edit="$EDITOR"
+alias vim="$EDITOR"
+alias nvim="$EDITOR"
+alias nano="$EDITOR"
 
 # symbolic links (ln)
 alias lns="ln -s"
@@ -66,7 +68,7 @@ alias gs="git status"
 alias gd="git diff"
 alias gl="git log --graph --decorate --pretty=oneline"
 alias gaa="git add ."
-alias gc="git commit"
+alias gc="git commit -S"
 alias gcan="git commit --amend --no-edit"
 alias gpl="git pull origin"
 alias gplo="git pull origin"

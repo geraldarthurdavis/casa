@@ -19,21 +19,27 @@ local on_attach = function(client, bufnr)
 end
 
 -- lua language server config
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
   single_file_support = true,
   on_attach = on_attach, -- attach navic
   settings = {
     Lua = {
       diagnostics = {
-        globals = { 'use', 'vim', 'use_rocks' } -- define global namespaced keywords
+        globals = { 'use', 'vim', 'use_rocks', 'on' } -- define global namespaced keywords
       }
     }
   }
 })
 
--- typescript language server config
-lspconfig.tsserver.setup({
-  on_attach = on_attach
+require("typescript").setup({
+    disable_commands = false, -- prevent the plugin from creating Vim commands
+    debug = false, -- enable debug logging for commands
+    go_to_source_definition = {
+        fallback = true, -- fall back to standard LSP definition on failure
+    },
+    server = { -- pass options to lspconfig's setup method
+      on_attach = on_attach
+    },
 })
 -- html language server config
 lspconfig.html.setup({})
@@ -45,6 +51,10 @@ lspconfig.pyright.setup({})
 lspconfig.solang.setup({})
 -- rust language server config
 lspconfig.rust_analyzer.setup({})
+-- tailwind
+lspconfig.tailwindcss.setup({})
+-- c sharp c#
+lspconfig.csharp_ls.setup({})
 
 -- add mappings when lsp attaches
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -56,7 +66,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     -- Displays hover information about the symbol under the cursor
-    bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+    bufmap('n', '<leader>sd', '<cmd>lua vim.lsp.buf.hover()<cr>')
 
     -- Jump to the definition
     bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
@@ -71,10 +81,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
 
     -- Lists all the references 
-    bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
+    bufmap('n', '<leader>sr', '<cmd>lua vim.lsp.buf.references()<cr>')
 
-    -- Displays a function's signature information
-    bufmap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+    bufmap('n', 'ss', '<cmd>lua vim.lsp.buf.signature_help()<cr>') -- show signature
 
     -- Renames all references to the symbol under the cursor
     bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
@@ -84,7 +93,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
 
     -- Show diagnostics errors in a floating window
-    bufmap('n', 'ew', '<cmd>lua vim.diagnostic.open_float()<cr>')
+    -- WARNING: this mapping conflicts with normal e (end of word motion)
+    -- bufmap('n', 'ew', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
     -- Move to the previous diagnostic
     bufmap('n', '<C-p>', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
