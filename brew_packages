@@ -13,4 +13,5 @@ fzf
 ripgrep
 flyctl
 luarocks
-
+localstack
+jq

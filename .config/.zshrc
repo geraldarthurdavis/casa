@@ -120,7 +120,7 @@ alias sand="cd $SANDBOX_HOME"
 export PATH="/opt/homebrew/opt/icu4c/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c/sbin:$PATH"
 
-alias engi="pipenv run engi"
+alias engi="PIPENV_PIPFILE=/Users/g/Developer/engi/cli pipenv run engi"
 
 # https://igor.moomers.org/navigating-arch-on-osx
 alias brow='arch --x86_64 /usr/local/homebrew/bin/brew'
