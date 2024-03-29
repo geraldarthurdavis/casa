@@ -9,6 +9,8 @@ map('n', '<leader>of', ':NvimTreeFindFile<cr>', options)
 map('n', '<leader>oft', ':NvimTreeOpen<cr>', options)
 map('n', '<leader>cf', ':NvimTreeClose<cr>', options)
 
+-- FIX: open filetree when opening vim for the first time
+
 
 -- TODO: close the filetree when exiting last vim buffer
 -- only remaining buffers after closing a file are diagnostics and file tree, quit vim

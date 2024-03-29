@@ -7,9 +7,10 @@ local options = { noremap = true, silent = true }
 map('n', '<C-D-]>', ':BufferNext<cr>', options)
 map('n', '<C-D-[>', ':BufferPrevious<cr>', options)
 
--- TODO: always sort by directory
-
 map('n', '<leader>cb', ':BufferClose<cr>', options) -- close buffer
+map('n', '<leader>bc', ':BufferClose<cr>', options) -- buffer close (maybe a more general us naming pattern)
+
+-- TODO: always sort by directory
 
 -- NOTE: if setting the file tree on the right side, this can be used to offset the tabs position
 --local nvim_tree_events = require('nvim-tree.events')

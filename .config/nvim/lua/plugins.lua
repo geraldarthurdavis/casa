@@ -1,13 +1,10 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
-vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "14.2")
-
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim' -- Packer can manage itself
-  use 'nvim-lua/plenary.nvim' -- lua async
   use 'Soares/base16.nvim'
   use 'famiu/nvim-reload' -- easy reloading  after editing vim configuration
   use "b0o/mapx.nvim" -- easier mapping settings
@@ -35,6 +32,8 @@ return require('packer').startup(function()
   use 'bfredl/nvim-ipy'
   use 'simrat39/symbols-outline.nvim' -- symbol viewer
   use 'mhinz/vim-startify' -- cool vim startup screen
+  use 'merrickluo/lsp-tailwindcss' -- tailwind completion and rule preview
+  -- use 'yaegassy/coc-tailwindcss3' -- tailwind completion and rule preview
 
   -- easy motion (vimium style navigation)
   use {
@@ -76,7 +75,8 @@ return require('packer').startup(function()
   use 'tjdevries/colorbuddy.vim'
 
   -- kitty navigation integration
-  use {'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/' } 
+  --use {'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/' } 
+  use {'knubie/vim-kitty-navigator' }
 
   -- file tree
   use {
@@ -93,6 +93,17 @@ return require('packer').startup(function()
         }
       }
     } end
+  }
+
+  use {
+    "antosha417/nvim-lsp-file-operations",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      --"nvim-tree/nvim-tree.lua",
+    },
+    config = function()
+      require("lsp-file-operations").setup()
+    end,
   }
 
   use 'romgrk/barbar.nvim' -- a great buffer tab bar
@@ -134,9 +145,18 @@ return require('packer').startup(function()
     } end
   }
 
+  use {
+    "ThePrimeagen/refactoring.nvim",
+    requires = {
+      {"nvim-lua/plenary.nvim"},
+      {"nvim-treesitter/nvim-treesitter"}
+    }
+  }
+
   -- searching
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0'
+    'nvim-telescope/telescope.nvim', tag = '0.1.6',
+    requires = { {'nvim-lua/plenary.nvim'} }
   }
 
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' } -- faster searching
@@ -198,11 +218,27 @@ return require('packer').startup(function()
   }
 
   -- visualize registers & their content
-  --use {
-    --"tversteeg/registers.nvim",
-    --config = function()
+  use {
+    "tversteeg/registers.nvim",
+    config = function()
+      -- FIX: this errors on packer sync
       --require("registers").setup()
-    --end,
-  --}
+    end,
+  }
+
+  -- ai code completion
+  use {
+      "Exafunction/codeium.nvim",
+      requires = {
+          "nvim-lua/plenary.nvim",
+          "hrsh7th/nvim-cmp",
+      },
+      config = function()
+        vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+        vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+        vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+        vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+      end
+  }
 
 end)

@@ -10,3 +10,7 @@ cmp.setup.filetype('gitcommit', {
     { name = 'buffer' },
   })
 })
+
+if vim.fn.has('nvim') then
+  vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait' 
+end

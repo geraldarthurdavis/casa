@@ -1,4 +1,6 @@
---require('providers')  -- neovim python providers
+vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "14.2")
+
+require('providers')  -- neovim python providers
 require('maps') -- keybindings
 require('statusline')  -- custom statusline
 require('plugins')  -- packer plugins
@@ -19,11 +21,11 @@ require('cursor') -- customize the cursor
 require('diagnostics') -- diagnostics settings
 require('tabs') -- buffers & tab viewing
 require('splits') -- lickity-split splits
-require('refactoring') -- easy & robust refactoring
+require('_refactoring') -- easy robust refactoring
 require('replace') -- replacing seleted text (outside refactoring)
 require('media') -- images, videos, audio
 require('symbols')
--- specifics for working on the workbench
-require("metamanagement")
+require("metamanagement") -- specifics for working on the workbench
 require('settings') -- misc settings
 require('alfred') -- there's nothing i don't
+require('syntax_highlighting')

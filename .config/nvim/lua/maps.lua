@@ -13,26 +13,22 @@ map('n', '<leader>ch', ':nohlsearch<cr>', options)
 -- go to end of previous word
 -- map('n', 'be', 'ge', options)
 
+-- quit mappings
 map('n', '<leader>qq', ':q<cr>', options) -- quit
 map('n', '<leader>qa', ':qa<cr>', options) -- quit all
 map('n', '<leader>qh', ':q!<cr>', options) -- quit hard
 map('n', '<leader>wq', ':wq<cr>', options) -- write quit
 map('n', '<leader>wqa', ':wqa<cr>', options) -- write quit all
 
--- "kuick" (quick) exit commands
-map('i', '<leader>kw', '<esc>:w<cr>', options)
-map('i', '<leader>kk', '<esc>', options)
+-- leave ('jump out of') insert mappings
+map('i', '<leader>jw', '<esc>:w<cr>', options)
+map('i', '<leader>jk', '<esc>', options)
 
 -- terminal (kitty) + neovim navigation
+map('n', '<C-k>', ':KittyNavigateUp<cr>', options)
 map('n', '<C-l>', ':KittyNavigateRight<cr>', options)
+map('n', '<C-j>', ':KittyNavigateDown<cr>', options)
 map('n', '<C-h>', ':KittyNavigateLeft<cr>', options)
-
--- hint searching
--- omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>
--- vnoremap <silent> m :lua require('tsht').nodes()<CR>
-
--- TODO: remap {} go to next/previous block
--- map('n', '{', 
 
 -- jump to empty & non-empty lines
 -- map('n', '<leader>nel', "", options) -- next empty line

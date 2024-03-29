@@ -1,11 +1,28 @@
 -- searching for files, code, etc.
 -- @see https://github.com/nvim-telescope/telescope.nvim/wiki/Extensions#sorter
 
+local map = vim.keymap.set
 local builtin = require('telescope.builtin')
 
-require('telescope').setup{
+require('telescope').setup({
+  defaults = {
+    vimgrep_arguments = { 'rg', '--hidden', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '-g', '!{.git, .next}'},
+    layout_config = {
+      height = 0.70,
+      preview_width = 0.65,
+      prompt_position = 'top'
+    }
+  },
   pickers = {
-    live_grep = {}
+    live_grep = {
+      hidden = true
+    },
+    find_files = {
+      find_command = {'rg', '--files', '--hidden', '-g', '!{.git, .next}'},
+    },
+    buffers = {
+      show_all_buffers = true,
+    },
   },
   extensions = {
     fzf = { -- improve performance using native+simplified fzf
@@ -16,15 +33,16 @@ require('telescope').setup{
                                        -- the default case_mode is "smart_case"
     }
   }
-}
+})
 
 require('telescope').load_extension('fzf')
--- require("telescope").load_extension("refactoring")
+--require("telescope").load_extension("refactoring")
 
 ----- maps
-vim.keymap.set('n', '<leader>sf', builtin.find_files, {}) -- search files
-vim.keymap.set('n', '<leader>ss', builtin.live_grep, {}) -- search source code
-vim.keymap.set('n', '<leader>sb', builtin.buffers, {}) -- search buffers
-vim.keymap.set('n', '<leader>st', builtin.help_tags, {}) -- search tags
+map('n', '<leader>sf', builtin.find_files, {}) -- search files
+map('n', '<leader>sh', "<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", { noremap = true })
+map('n', '<leader>ss', builtin.live_grep, {}) -- search source code
+map('n', '<leader>sb', builtin.buffers, {}) -- search buffers
+map('n', '<leader>st', builtin.help_tags, {}) -- search tags
 -- todo: open live_grep with word object under cursor
 -- vim.keymap.set('n', '<leader>sc', builtin.live_grep, {}) -- search under cursor source code

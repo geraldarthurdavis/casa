@@ -7,8 +7,8 @@ local opt = vim.opt
 opt.splitbelow = true
 opt.splitright = true
 
-map('n', '<leader>hs', '<CMD>:split<CR>', options)
-map('n', '<leader>vs', '<CMD>:vsplit<CR>', options)
+map('n', '<leader>ssh', '<CMD>:split<CR>', options)
+map('n', '<leader>ssv', '<CMD>:vsplit<CR>', options)
 
 map('n', '<C-D-h>', '<C-W><C-H>', options)
 map('n', '<C-D-j>', '<C-W><C-J>', options)

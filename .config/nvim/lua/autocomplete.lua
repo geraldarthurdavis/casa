@@ -25,13 +25,13 @@ cmp.setup({
   -- ordered by priority data sources for completion menu
   sources = cmp.config.sources({
     {name = 'path'}, -- complete the filepath
-    {name = 'copilot' }, -- github copilot
+    {name = 'codeium', keyword_length = 1 }, -- github copilot
     {name = 'nvim_lsp' }, -- complete from language server
     {name = 'nvim_lsp_signature_help'}, -- better function signature completion
-    {name = 'luasnip'}, -- friendly snippets
+    --{name = 'luasnip'}, -- friendly snippets
   }, {
     {name = 'fuzzy_buffer', keyword_length = 3 }, -- complete with other words in buffer
-    {name = 'calc', keyword_length = 3}, -- eval math
+    --{name = 'calc', keyword_length = 3}, -- eval math
     {name = 'crates', keyword_length = 4}, -- cargo crates
     {name = 'npm', keyword_length = 4}, -- npm packages
     {name = 'plugins', keyword_length = 4}, -- neovim plugins
@@ -51,7 +51,7 @@ cmp.setup({
         luasnip = '', -- snippets
         fuzzy_buffer = '', -- words in buffer
         path = '', -- filepath
-        copilot = '', -- github copilot
+        codeium = '', -- github copilot
         calc = '',
         crates = '',
         npm = '',

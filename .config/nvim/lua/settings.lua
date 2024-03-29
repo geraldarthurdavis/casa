@@ -29,7 +29,8 @@ cmd 'colorscheme edge'
 
 -- window-local options
 wo.number = false
-wo.wrap = false
+wo.wrap = true -- wrap text so no horizontal scroll
+wo.linebreak = true -- wrap text so no horizontal scroll
 
 -- set custom filetypes if not supported
 -- cmd('au BufNewFile,BufRead * if &filetype == "" | set ft=text | endif')

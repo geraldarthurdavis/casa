@@ -1,7 +1,8 @@
+local LSP = {}
+
 require('mason').setup()
 require('mason-lspconfig').setup()
 
-local navic = require("nvim-navic")
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
 
@@ -12,9 +13,9 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
 )
 
 -- shared language setup config attach
-local on_attach = function(client, bufnr)
+function LSP.on_attach(client, bufnr)
     if client.server_capabilities.documentSymbolProvider then
-        navic.attach(client, bufnr) -- navic shows  symbols in winbar
+        require("nvim-navic").attach(client, bufnr) -- navic shows  symbols in winbar
     end
 end
 
@@ -65,11 +66,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set(mode, lhs, rhs, opts)
     end
 
-    -- Displays hover information about the symbol under the cursor
-    bufmap('n', '<leader>sd', '<cmd>lua vim.lsp.buf.hover()<cr>')
-
-    -- Jump to the definition
-    bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    -- word highlight
+    bufmap('n', '<leader>wh', '<cmd>lua vim.lsp.buf.hover()<cr>')
+    -- word definition
+    bufmap('n', '<leader>wd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    -- word references
+    bufmap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.references()<cr>')
 
     -- Jump to declaration
     bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
@@ -80,10 +82,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Jumps to the definition of the type symbol
     bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
 
-    -- Lists all the references 
-    bufmap('n', '<leader>sr', '<cmd>lua vim.lsp.buf.references()<cr>')
-
-    bufmap('n', 'ss', '<cmd>lua vim.lsp.buf.signature_help()<cr>') -- show signature
+    --bufmap('n', 'ss', '<cmd>lua vim.lsp.buf.signature_help()<cr>') -- show signature
 
     -- Renames all references to the symbol under the cursor
     bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
@@ -113,3 +112,5 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
   vim.lsp.handlers.signature_help,
   {border = 'rounded'}
 )
+
+return LSP

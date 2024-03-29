@@ -1,5 +1,5 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
 # load zsh plugin manager zgen
 source "${HOME}/.zgen/zgen.zsh"
 
@@ -115,6 +115,8 @@ eval "$(rbenv init -)"
 
 # python
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+alias engi="pipenv run engi "
 
 # misc.
 alias sand="cd $SANDBOX_HOME"
@@ -122,8 +124,8 @@ alias sand="cd $SANDBOX_HOME"
 export PATH="/opt/homebrew/opt/icu4c/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c/sbin:$PATH"
 
-alias engienv="source /Users/g/.local/share/virtualenvs/cli-L_QUJPw1/bin/activate"
-alias engi="PIPENV_VERBOSITY=-1 pipenv run engi"
+#alias engienv="source /Users/g/.local/share/virtualenvs/cli-L_QUJPw1/bin/activate"
+#alias engi="PIPENV_VERBOSITY=-1 pipenv run engi"
 
 # https://igor.moomers.org/navigating-arch-on-osx
 alias brow='arch --x86_64 /usr/local/homebrew/bin/brew'
@@ -144,5 +146,13 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+[[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_TYPE=en_US.UTF-8
