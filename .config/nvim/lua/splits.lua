@@ -7,6 +7,10 @@ local opt = vim.opt
 opt.splitbelow = true
 opt.splitright = true
 
+-- Default splitting will cause your main splits to jump when opening an edgebar.
+-- To prevent this, set `splitkeep` to either `screen` or `topline`.
+opt.splitkeep = "screen"
+
 map('n', '<leader>ssh', '<CMD>:split<CR>', options)
 map('n', '<leader>ssv', '<CMD>:vsplit<CR>', options)
 

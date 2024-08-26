@@ -24,9 +24,10 @@ cmp.setup({
 
   -- ordered by priority data sources for completion menu
   sources = cmp.config.sources({
-    {name = 'path'}, -- complete the filepath
-    {name = 'codeium', keyword_length = 1 }, -- github copilot
     {name = 'nvim_lsp' }, -- complete from language server
+    {name = 'codeium' }, -- codeium copilot
+    --{name = 'copilot' }, -- github copilot
+    {name = 'path'}, -- complete the filepath
     {name = 'nvim_lsp_signature_help'}, -- better function signature completion
     --{name = 'luasnip'}, -- friendly snippets
   }, {
@@ -47,11 +48,12 @@ cmp.setup({
     fields = {'menu', 'abbr', 'kind'},
     format = function(entry, item)
       local menu_icon = {
-        nvim_lsp = '', --  LSP code completion
+        nvim_lsp = '', --  LSP intelligent code completion
+        codeium = '', -- github copilot
         luasnip = '', -- snippets
         fuzzy_buffer = '', -- words in buffer
         path = '', -- filepath
-        codeium = '', -- github copilot
+        --copilot = '', -- github copilot
         calc = '',
         crates = '',
         npm = '',

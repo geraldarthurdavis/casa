@@ -1,3 +1,4 @@
+local opt = vim.opt
 local navic = require("nvim-navic")
 
 require("lualine").setup({
@@ -8,3 +9,6 @@ require("lualine").setup({
     }
   }
 })
+
+-- views can only be fully collapsed with the global statusline
+opt.laststatus = 3

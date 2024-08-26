@@ -14,15 +14,15 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
 
 -- shared language setup config attach
 function LSP.on_attach(client, bufnr)
-    if client.server_capabilities.documentSymbolProvider then
-        require("nvim-navic").attach(client, bufnr) -- navic shows  symbols in winbar
-    end
+  if client.server_capabilities.documentSymbolProvider then
+    require("nvim-navic").attach(client, bufnr) -- navic shows  symbols in winbar
+  end
 end
 
 -- lua language server config
 lspconfig.lua_ls.setup({
   single_file_support = true,
-  on_attach = on_attach, -- attach navic
+  on_attach = LSP.on_attach, -- attach navic
   settings = {
     Lua = {
       diagnostics = {
@@ -33,14 +33,14 @@ lspconfig.lua_ls.setup({
 })
 
 require("typescript").setup({
-    disable_commands = false, -- prevent the plugin from creating Vim commands
-    debug = false, -- enable debug logging for commands
-    go_to_source_definition = {
-        fallback = true, -- fall back to standard LSP definition on failure
-    },
-    server = { -- pass options to lspconfig's setup method
-      on_attach = on_attach
-    },
+  disable_commands = false,    -- prevent the plugin from creating Vim commands
+  debug = false,               -- enable debug logging for commands
+  go_to_source_definition = {
+    fallback = true,           -- fall back to standard LSP definition on failure
+  },
+  server = {                   -- pass options to lspconfig's setup method
+    on_attach = LSP.on_attach, -- attach navic
+  },
 })
 -- html language server config
 lspconfig.html.setup({})
@@ -60,11 +60,14 @@ lspconfig.csharp_ls.setup({})
 -- add mappings when lsp attaches
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
-  callback = function()
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
     local bufmap = function(mode, lhs, rhs)
-      local opts = {buffer = true}
+      local opts = { buffer = true }
       vim.keymap.set(mode, lhs, rhs, opts)
     end
+
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
     -- word highlight
     bufmap('n', '<leader>wh', '<cmd>lua vim.lsp.buf.hover()<cr>')
@@ -103,14 +106,52 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp-attach-format', { clear = true }),
+  -- This is where we attach the autoformatting for reasonable clients
+  callback = function(args)
+    local client_id = args.data.client_id
+    local client = vim.lsp.get_client_by_id(client_id)
+    local bufnr = args.buf
+
+    if not client.server_capabilities.documentFormattingProvider then
+      return
+    end
+  end,
+})
+
+-- format on buffer write
+vim.api.nvim_create_autocmd("BufWritePre", {
+  buffer = buffer,
+  callback = function()
+    vim.lsp.buf.format { async = false }
+  end
+})
+
+--vim.api.nvim_create_autocmd('BufWritePre', {
+--group = get_augroup(client),
+--buffer = bufnr,
+--callback = function()
+--if not format_is_enabled then
+--return
+--end
+--vim.lsp.buf.format {
+--async = false,
+--filter = function(c)
+--return c.id == client.id
+--end,
+--}
+--end,
+--})
+
 -- style the LSP UI
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
   vim.lsp.handlers.hover,
-  {border = 'rounded'}
+  { border = 'rounded' }
 )
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
   vim.lsp.handlers.signature_help,
-  {border = 'rounded'}
+  { border = 'rounded' }
 )
 
 return LSP

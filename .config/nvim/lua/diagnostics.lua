@@ -11,7 +11,8 @@ trouble.setup({
   use_diagnostic_signs = true
 })
 
-vim.keymap.set("n", "<leader>dt", "<cmd>TroubleToggle<cr>", options) -- show diagnostics
+vim.keymap.set("n", "<leader>sd", "<cmd>TroubleToggle<cr>", options) -- show diagnostics
+vim.keymap.set("n", "<leader>dd", "<cmd>TroubleToggle<cr>", options) -- show diagnostics
 vim.keymap.set("n", "<leader>do", "<cmd>TroubleOpen<cr>", options) -- open diagnostics
 vim.keymap.set("n", "<leader>dc", "<cmd>TroubleClose<cr>", options) -- close diagnostics
 
