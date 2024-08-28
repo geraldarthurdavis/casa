@@ -33,3 +33,4 @@ require('settings')       -- misc settings
 require('alfred')         -- there's nothing i don't
 require('syntax_highlighting')
 require('copilot')
+require('panes')

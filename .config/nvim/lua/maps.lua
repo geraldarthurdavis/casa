@@ -24,12 +24,6 @@ map('n', '<leader>wqa', ':wqa<cr>', options) -- write quit all
 map('i', '<leader>jw', '<esc>:w<cr>', options)
 map('i', '<leader>jk', '<esc>', options)
 
--- terminal (kitty) + neovim navigation
-map('n', '<C-k>', ':KittyNavigateUp<cr>', options)
-map('n', '<C-l>', ':KittyNavigateRight<cr>', options)
-map('n', '<C-j>', ':KittyNavigateDown<cr>', options)
-map('n', '<C-h>', ':KittyNavigateLeft<cr>', options)
-
 -- jump to empty & non-empty lines
 -- map('n', '<leader>nel', "", options) -- next empty line
 -- map('n', '<leader>pel', "", options) -- previous empty line
