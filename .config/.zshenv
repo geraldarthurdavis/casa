@@ -17,6 +17,9 @@ export SANDBOX_HOME="$DEVELOPER_HOME/Sandbox"
 export CASA_CONFIG="$HOME/Developer/Casa"
 export CONFIG_HOME="$HOME/.config"
 
+# engi
+export ENGI_MONOREPO_DIR="$HOME/Developer/engi/engi"
+
 # nvm  
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # load nvm
@@ -47,3 +50,5 @@ export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_TYPE=en_US.UTF-8
+
+export PATH="$PATH:/Users/g/.foundry/bin"

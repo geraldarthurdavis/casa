@@ -2,6 +2,7 @@ vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "14.2")
 
 
 require('packer.luarocks').install_commands()
+require("load_env")
 
 require('providers')      -- neovim python providers
 require('maps')           -- keybindings
@@ -32,5 +33,9 @@ require("metamanagement") -- specifics for working on the workbench
 require('settings')       -- misc settings
 require('alfred')         -- there's nothing i don't
 require('syntax_highlighting')
-require('copilot')
+require('ai')
 require('panes')
+require('clipboard')
+require('folds')
+require('highlights')
+require('editing')

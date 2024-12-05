@@ -5,6 +5,7 @@ require('mason-lspconfig').setup()
 
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
+local configs = require 'lspconfig.configs'
 
 lsp_defaults.capabilities = vim.tbl_deep_extend(
   'force',
@@ -32,30 +33,44 @@ lspconfig.lua_ls.setup({
   }
 })
 
-require("typescript").setup({
-  disable_commands = false,    -- prevent the plugin from creating Vim commands
-  debug = false,               -- enable debug logging for commands
-  go_to_source_definition = {
-    fallback = true,           -- fall back to standard LSP definition on failure
-  },
-  server = {                   -- pass options to lspconfig's setup method
-    on_attach = LSP.on_attach, -- attach navic
-  },
-})
+--require("typescript").setup({
+--disable_commands = false,    -- prevent the plugin from creating Vim commands
+--debug = false,               -- enable debug logging for commands
+--go_to_source_definition = {
+--fallback = true,           -- fall back to standard LSP definition on failure
+--},
+--server = {                   -- pass options to lspconfig's setup method
+--on_attach = LSP.on_attach, -- attach navic
+--},
+--})
 -- html language server config
 lspconfig.html.setup({})
 -- css language server config
 lspconfig.cssls.setup({})
 -- python language server config
 lspconfig.pyright.setup({})
--- solidity/solang language server config
-lspconfig.solang.setup({})
 -- rust language server config
 lspconfig.rust_analyzer.setup({})
 -- tailwind
 lspconfig.tailwindcss.setup({})
 -- c sharp c#
 lspconfig.csharp_ls.setup({})
+-- typescript
+lspconfig.ts_ls.setup({})
+-- solidity/solang language server config
+--lspconfig.solang.setup({})
+-- solidity
+
+configs.solidity = {
+  default_config = {
+    cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
+    filetypes = { 'solidity' },
+    root_dir = lspconfig.util.find_git_ancestor,
+    single_file_support = true,
+  },
+}
+
+lspconfig.solidity.setup {}
 
 -- add mappings when lsp attaches
 vim.api.nvim_create_autocmd('LspAttach', {

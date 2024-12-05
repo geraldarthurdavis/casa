@@ -1,3 +1,4 @@
+# 'refactoring' is an existing (3rd party) module name hence the prefix '_'
 require('refactoring').setup()
 vim.keymap.set("x", "<leader>re", function() require('refactoring').refactor('Extract Function') end)
 vim.keymap.set("x", "<leader>rf", function() require('refactoring').refactor('Extract Function To File') end)
@@ -13,7 +14,7 @@ vim.keymap.set("n", "<leader>rb", function() require('refactoring').refactor('Ex
 vim.keymap.set("n", "<leader>rbf", function() require('refactoring').refactor('Extract Block To File') end)
 -- Extract block supports only normal mode
 vim.keymap.set(
-    {"n", "x"},
-    "<leader>rr",
-    function() require('refactoring').select_refactor() end
+  { "n", "x" },
+  "<leader>rr",
+  function() require('refactoring').select_refactor() end
 )

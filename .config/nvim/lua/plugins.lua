@@ -34,6 +34,7 @@ return require('packer').startup(function()
   use 'mhinz/vim-startify'                 -- cool vim startup screen
   use 'merrickluo/lsp-tailwindcss'         -- tailwind completion and rule preview
   -- use 'yaegassy/coc-tailwindcss3' -- tailwind completion and rule preview
+  use 'tomlion/vim-solidity'
 
   -- easy motion (vimium style navigation)
   use {
@@ -80,23 +81,7 @@ return require('packer').startup(function()
   --use { 'knubie/vim-kitty-navigator' }
 
   -- file tree
-  use {
-    'kyazdani42/nvim-tree.lua',
-    config = function()
-      require 'nvim-tree'.setup {
-        view = {
-          side = "right"
-        },
-        renderer = {
-          icons = {
-            show = {
-              folder_arrow = false
-            }
-          }
-        }
-      }
-    end
-  }
+  use 'kyazdani42/nvim-tree.lua'
 
   use {
     "antosha417/nvim-lsp-file-operations",
@@ -236,7 +221,7 @@ return require('packer').startup(function()
   use {
     'yetone/avante.nvim',
     --event = 'BufRead', -- Use a valid event like 'BufRead' for lazy loading
-    --build = 'make',    -- Optional build step
+    run = 'cd ~/.local/share/nvim/site/pack/packer/start/avante.nvim && make', -- required build
     config = function()
       -- see copilot.lua for config
     end,

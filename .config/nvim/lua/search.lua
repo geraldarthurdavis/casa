@@ -6,11 +6,11 @@ local builtin = require('telescope.builtin')
 
 require('telescope').setup({
   defaults = {
-    vimgrep_arguments = { 'rg', '--hidden', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '-g', '!{.git, .next}'},
+    vimgrep_arguments = { 'rg', '--hidden', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '-g', '!{.git, .next}' },
     layout_config = {
       height = 0.70,
       preview_width = 0.65,
-      prompt_position = 'top'
+      --prompt_position = 'top'
     }
   },
   pickers = {
@@ -18,19 +18,19 @@ require('telescope').setup({
       hidden = true
     },
     find_files = {
-      find_command = {'rg', '--files', '--hidden', '-g', '!{.git, .next}'},
+      find_command = { 'rg', '--files', '--hidden', '-g', '!{.git, .next}' },
     },
     buffers = {
       show_all_buffers = true,
     },
   },
   extensions = {
-    fzf = { -- improve performance using native+simplified fzf
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                       -- the default case_mode is "smart_case"
+    fzf = {                           -- improve performance using native+simplified fzf
+      fuzzy = true,                   -- false will only do exact matching
+      override_generic_sorter = true, -- override the generic sorter
+      override_file_sorter = true,    -- override the file sorter
+      case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+      -- the default case_mode is "smart_case"
     }
   }
 })
@@ -38,11 +38,13 @@ require('telescope').setup({
 require('telescope').load_extension('fzf')
 --require("telescope").load_extension("refactoring")
 
------ maps
 map('n', '<leader>sf', builtin.find_files, {}) -- search files
-map('n', '<leader>sh', "<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", { noremap = true })
-map('n', '<leader>ss', builtin.live_grep, {}) -- search source code
-map('n', '<leader>sb', builtin.buffers, {}) -- search buffers
-map('n', '<leader>st', builtin.help_tags, {}) -- search tags
+map('n', '<leader>sc', builtin.live_grep, {})  -- search code
+map('n', '<leader>sb', builtin.buffers, {})    -- search buffers
+map('n', '<leader>st', builtin.help_tags, {})  -- search tags
+
+-- search hidden: (think default searches uzzy and files etc incl now) map('n', '<leader>sh',
+--"<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>",
+--{ noremap = true })
 -- todo: open live_grep with word object under cursor
 -- vim.keymap.set('n', '<leader>sc', builtin.live_grep, {}) -- search under cursor source code

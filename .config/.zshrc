@@ -103,6 +103,16 @@ alias nb="npm run build"
 alias nt="npm run test"
 alias np="npm run pretty"
 
+# pnpm
+alias pi="pnpm install"
+alias pis="pnpm install --save"
+alias pid="pnpm install --save-dev"
+alias pd="pnpm run dev"
+alias ps="pnpm run start"
+alias pb="pnpm run build"
+alias pt="pnpm run test"
+alias pp="pnpm run pretty"
+
 # file navigation
 alias ..="cd .."
 
@@ -118,7 +128,12 @@ eval "$(rbenv init -)"
 # python
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+alias python="python3"
+alias pip="pip3"
+
+# engi
 alias engi="pipenv run engi "
+alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/README.md"
 
 # misc.
 alias sand="cd $SANDBOX_HOME"
