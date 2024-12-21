@@ -66,6 +66,48 @@ alias la="ls -la"
 alias gco="git checkout"
 alias gs="git status"
 alias gd="git diff"
+
+# ai git helpers
+aigcm() {
+    typeset staged_diff
+    typeset unstaged_diff
+    typeset diff
+    typeset prompt
+    typeset message
+    
+    staged_diff=$(git diff --cached --unified=3)
+    unstaged_diff=$(git diff --unified=3)
+    
+    if [ -n "$staged_diff" ]; then
+        diff=$staged_diff
+    elif [ -n "$unstaged_diff" ]; then
+        diff=$unstaged_diff
+    else
+        echo "No changes detected. Stage or make some changes first."
+        return 1
+    fi
+    
+    prompt="Generate a git commit message for this diff. Rules: 1) Use present tense 2) Be concise - max 50 chars 3) Start with a verb 4) No quotes or explanations 5) No Markdown 6) No prefixes or ticket numbers:\n\n$diff"
+    
+    message=$(echo "$prompt" | ollama run llama2:latest | head -n 1 | tr -d '"' | tr -d "'" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    echo "gc -m '$message'"
+}
+
+aiwf() {
+    typeset diff
+    typeset prompt
+    
+    diff=$(git diff)
+    if [ -z "$diff" ]; then
+        echo "No changes detected."
+        return 1
+    fi
+    
+    prompt="Review this diff and identify potential issues, bugs, or problematic patterns. Focus on security, performance, and best practices. Be direct and specific:\n\n$diff"
+    
+    echo "Analyzing changes...\n"
+    echo "$prompt" | ollama run llama2:latest
+}
 alias gl="git log --graph --decorate --pretty=oneline"
 alias gaa="git add ."
 alias gc="git commit -S"
@@ -122,6 +164,9 @@ eval "$(starship init zsh)"
 # openai
 alias oafr="openai api fine_tunes.results -i $1"
 
+# ai
+alias codecopy='for f in "$@"; do echo -e "\n# $f\n"; cat "$f"; done | pbcopy' # codecopy is useful to get all contents to paste into chat (codecopy file1.js file2.py file3.txt)
+
 # ruby
 eval "$(rbenv init -)"
 
@@ -134,6 +179,7 @@ alias pip="pip3"
 # engi
 alias engi="pipenv run engi "
 alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/README.md"
+alias ce="cd $ENGI_MONOREPO_DIR"
 
 # misc.
 alias sand="cd $SANDBOX_HOME"

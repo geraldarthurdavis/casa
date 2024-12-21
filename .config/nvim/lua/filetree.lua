@@ -10,9 +10,15 @@ map('n', '<leader>ff', ':NvimTreeFindFile<cr>', options)
 map('n', '<leader>fo', ':NvimTreeOpen<cr>', options)
 map('n', '<leader>fc', ':NvimTreeClose<cr>', options)
 
+-- In your treesitter-context setup
+local function get_text_for_node(node, bufnr)
+  if not node then return "" end
+  local text = vim.treesitter.get_node_text(node, bufnr)
+  if not text then return "" end
+  return text
+end
+
 -- FIX: open filetree when opening vim for the first time
-
-
 -- TODO: close the filetree when exiting last vim buffer
 -- only remaining buffers after closing a file are diagnostics and file tree, quit vim
 --vim.api.nvim_command([[

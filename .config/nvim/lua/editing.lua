@@ -1,6 +1,10 @@
 local map = vim.api.nvim_set_keymap
 local options = { noremap = true, silent = true }
 
+vim.wo.number = true
+vim.wo.relativenumber = true
+vim.wo.numberwidth = 2
+
 -- write 'kuick'
 map('i', '<leader>kw', '<esc>:w<cr>', options)
 map('n', '<leader>kw', ':w<cr>', options)

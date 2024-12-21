@@ -1,5 +1,13 @@
 require('avante_lib').load()
 
+-- needed
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "Avante" }, -- Add other filetypes if needed
+  callback = function()
+    vim.bo.modifiable = true
+  end
+})
+
 require('avante').setup({
   provider = "claude",
   --provider = "gemini",
@@ -7,14 +15,13 @@ require('avante').setup({
     ----api_key_name = "cmd:bw get notes anthropic-api-key", -- the shell command must prefixed with `^cmd:(.*)`
     --model = "claude-3-opus-20240229",
     model = "claude-3-5-sonnet-latest",
-    temperature = 0.0069,
-    max_tokens = 4096,
+    temperature = 0.000069,
+    max_tokens = 8192,
   },
   gemini = {
-    --api_key_name = "GOOGLE_API_KEY",
-    model = "gemini-1.5-pro-exp-0801",
+    model = "gemini-exp-1206",
     --model = "gemini-1.5-pro-latest",
-    temperature = 0.0069,
+    temperature = 0.00069,
     --max_tokens = 4096,
   },
   windows = {

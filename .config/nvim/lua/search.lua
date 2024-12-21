@@ -9,7 +9,7 @@ require('telescope').setup({
     vimgrep_arguments = { 'rg', '--hidden', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case', '-g', '!{.git, .next}' },
     layout_config = {
       height = 0.70,
-      preview_width = 0.65,
+      --preview_width = 0.65, (TODO: ideally, this can be enabled for *certain* telescopes. but it was breaking plugins that use telescrope like avante as an 'unsupported feature for center layout strategy' (in avantes case)
       --prompt_position = 'top'
     }
   },
