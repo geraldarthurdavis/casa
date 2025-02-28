@@ -8,6 +8,10 @@ from kitty.key_encoding import KeyEvent, parse_shortcut
 
 LOG_FILE = os.path.expanduser("~/Desktop/kitty_pass_keys.log")
 
+# Cache for vim detection results
+_vim_detection_cache = {}
+_cache_timeout = 0.5  # Cache results for 0.5 seconds
+
 def log_to_file(message, data=None):
     """Write log messages to the log file with timestamp"""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -29,57 +33,100 @@ def is_window_vim(window, vim_id):
         "foreground_processes": fp
     })
     
-    # Get all process IDs from foreground processes
-    process_ids = [p['pid'] for p in fp if 'pid' in p]
-    
     # Import subprocess to run ps commands
     import subprocess
+    import time
     
-    # Function to check if a process or any of its ancestors/descendants is vim
-    def check_process_tree(pid, depth=2):
-        try:
-            # Check process itself
-            cmd = f"ps -p {pid} -o command="
-            process = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-            if process.returncode == 0 and re.search(vim_id, process.stdout, re.I):
-                log_to_file(f"Found vim in process {pid}: {process.stdout.strip()}")
-                return True
-                
-            if depth <= 0:
-                return False
-                
-            # Check parent process (up the tree)
-            cmd = f"ps -p {pid} -o ppid="
-            parent = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-            if parent.returncode == 0 and parent.stdout.strip():
-                parent_pid = parent.stdout.strip()
-                if parent_pid != "1":  # Don't check init process
-                    if check_process_tree(parent_pid, depth-1):
-                        return True
+    # Optimization 1: Use a single ps command to get all processes at once
+    # This avoids multiple subprocess calls
+    start_time = time.time()
+    
+    try:
+        # Get all processes in a single call
+        cmd = "ps -ax -o pid,ppid,command"
+        process_output = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        
+        if process_output.returncode != 0:
+            log_to_file(f"Error getting process list: {process_output.stderr}")
+            return False
             
-            # Check child processes (down the tree)
-            cmd = f"pgrep -P {pid}"
-            children = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-            if children.returncode == 0 and children.stdout.strip():
-                child_pids = children.stdout.strip().split('\n')
-                for child_pid in child_pids:
-                    if child_pid and check_process_tree(child_pid, depth-1):
-                        return True
-                        
+        # Parse the output into a dictionary for quick lookups
+        processes = {}
+        children = {}
+        
+        for line in process_output.stdout.strip().split('\n')[1:]:  # Skip header
+            parts = line.strip().split(None, 2)
+            if len(parts) >= 3:
+                pid, ppid, command = parts
+                pid, ppid = pid.strip(), ppid.strip()
+                
+                # Store process info
+                processes[pid] = {
+                    'command': command,
+                    'ppid': ppid,
+                    'is_vim': bool(re.search(vim_id, command, re.I))
+                }
+                
+                # Build child relationships
+                if ppid not in children:
+                    children[ppid] = []
+                children[ppid].append(pid)
+        
+        # Get all process IDs from foreground processes
+        process_ids = [str(p['pid']) for p in fp if 'pid' in p]
+        
+        # Optimization 2: Use a set for visited PIDs to avoid checking the same process multiple times
+        visited = set()
+        
+        # Optimization 3: Use an iterative approach instead of recursion
+        def check_process_tree(start_pid, max_depth=2):
+            # Use a queue for breadth-first search
+            queue = [(start_pid, 0, 'self')]  # (pid, depth, relation)
+            
+            while queue:
+                pid, depth, relation = queue.pop(0)
+                
+                if pid in visited:
+                    continue
+                    
+                visited.add(pid)
+                
+                # Check if this process is vim
+                if pid in processes and processes[pid]['is_vim']:
+                    log_to_file(f"Found vim in {relation} process {pid}: {processes[pid]['command']}")
+                    return True
+                
+                if depth >= max_depth:
+                    continue
+                
+                # Add parent to queue
+                if pid in processes:
+                    ppid = processes[pid]['ppid']
+                    if ppid != "1" and ppid not in visited:  # Don't check init process
+                        queue.append((ppid, depth + 1, 'parent'))
+                
+                # Add children to queue
+                if pid in children:
+                    for child_pid in children[pid]:
+                        if child_pid not in visited:
+                            queue.append((child_pid, depth + 1, 'child'))
+            
             return False
-        except Exception as e:
-            log_to_file(f"Error checking process tree for PID {pid}: {str(e)}")
-            return False
-    
-    # Check each process in the window
-    for pid in process_ids:
-        log_to_file(f"Checking process tree for PID: {pid}")
-        if check_process_tree(pid):
-            log_to_file(f"Vim found in process tree of PID {pid}")
-            return True
-    
-    log_to_file("Vim not found in any process trees")
-    return False
+        
+        # Check each process in the window
+        for pid in process_ids:
+            if check_process_tree(pid):
+                end_time = time.time()
+                log_to_file(f"Vim found in process tree of PID {pid} (took {(end_time - start_time)*1000:.2f}ms)")
+                return True
+        
+        end_time = time.time()
+        log_to_file(f"Vim not found in any process trees (took {(end_time - start_time)*1000:.2f}ms)")
+        return False
+        
+    except Exception as e:
+        log_to_file(f"Error in optimized process tree check: {str(e)}")
+        return False
 
 def encode_key_mapping(window, key_mapping):
     log_to_file(f"Encoding key mapping: {key_mapping}")
@@ -120,8 +167,27 @@ def handle_result(args, result, target_window_id, boss):
     if window is None:
         log_to_file("Window not found!")
         return
+    
+    # Check cache first
+    import time
+    current_time = time.time()
+    cache_key = f"{target_window_id}:{vim_id}"
+    
+    if cache_key in _vim_detection_cache:
+        cached_result, timestamp = _vim_detection_cache[cache_key]
+        if current_time - timestamp < _cache_timeout:
+            log_to_file(f"Using cached vim detection result: {cached_result}")
+            is_vim = cached_result
+        else:
+            # Cache expired
+            is_vim = is_window_vim(window, vim_id)
+            _vim_detection_cache[cache_key] = (is_vim, current_time)
+    else:
+        # No cache entry
+        is_vim = is_window_vim(window, vim_id)
+        _vim_detection_cache[cache_key] = (is_vim, current_time)
         
-    if is_window_vim(window, vim_id):
+    if is_vim:
         log_to_file("Vim detected, passing keys to vim")
         for keymap in key_mapping.split(">"):
             log_to_file(f"Processing keymap: {keymap}")
