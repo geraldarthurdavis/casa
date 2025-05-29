@@ -178,7 +178,7 @@ alias pip="pip3"
 
 # engi
 alias engi="pipenv run engi "
-alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/README.md" # edit engi
+alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/docs/PRODUCT.md" # edit engi
 alias ee=eengi
 alias gengi="cd $ENGI_MONOREPO_DIR" # go engi
 alias ge=gengi

@@ -27,3 +27,16 @@ end
 
 -- Load the .env file (adjust the path as necessary)
 load_env_file(vim.fn.stdpath('config') .. '/.env')
+
+-- ---------------------------------------------------------------------------
+-- Ensure Mason-installed binaries are on PATH so that Neovim can spawn the
+-- corresponding language-servers no matter how it is launched (terminal,
+-- GUI, or embedded).
+-- ---------------------------------------------------------------------------
+local mason_bin = vim.fn.stdpath('data') .. '/mason/bin'
+
+-- Prepend only if it's not already present to avoid endlessly extending PATH
+if not tostring(vim.env.PATH):find(mason_bin, 1, true) then
+  vim.env.PATH = mason_bin .. ':' .. vim.env.PATH
+end
+

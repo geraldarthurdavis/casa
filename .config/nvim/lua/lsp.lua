@@ -1,8 +1,5 @@
 local LSP = {}
 
-require('mason').setup()
-require('mason-lspconfig').setup()
-
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
 local configs = require 'lspconfig.configs'
@@ -41,11 +38,12 @@ lspconfig.pyright.setup({})
 -- rust language server config
 lspconfig.rust_analyzer.setup({})
 -- tailwind
+-- rely on the default cmd ("tailwindcss-language-server --stdio") that Mason installs
 lspconfig.tailwindcss.setup({})
 -- c sharp c#
 lspconfig.csharp_ls.setup({})
 -- typescript
-lspconfig.ts_ls.setup({})
+lspconfig.tsserver.setup({})
 -- solidity/solang language server config
 --lspconfig.solang.setup({})
 -- solidity

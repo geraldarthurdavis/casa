@@ -155,12 +155,31 @@ return require('packer').startup(function()
   use "SmiteshP/nvim-navic"                                        -- show language specific context in status line
   use 'lewis6991/nvim-treesitter-context'                          -- show context in winbar (ie within function or struct)
 
-  -- language servers for syntax, autocomplete, status line, etc.
+  -- ╭──────────────────────────────────────────────────────────────╮
+  -- │  LSP and external tooling installer (Mason)                 │
+  -- ╰──────────────────────────────────────────────────────────────╯
+
+  -- 1. Mason itself – provides the :Mason UI and installs binaries
   use {
     'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-    'neovim/nvim-lspconfig'
+    config = function()
+      require('mason').setup()
+    end,
   }
+
+  -- 2. Bridge that makes the servers installed by Mason available
+  --    to nvim-lspconfig *and* automatically adds Mason's bin dir
+  --    to PATH.
+  use {
+    'williamboman/mason-lspconfig.nvim',
+    after = 'mason.nvim',
+    config = function()
+      require('mason-lspconfig').setup()
+    end,
+  }
+
+  -- 3. Core LSP client configs (we configure individual servers in lua/lsp.lua)
+  use 'neovim/nvim-lspconfig'
 
   use({
     "hrsh7th/nvim-cmp", -- use for automcompletion engine
@@ -218,7 +237,8 @@ return require('packer').startup(function()
   }
 
   use {
-    'yetone/avante.nvim',
+    '~/Developer/engi/engi.nvim',
+    as = 'avante.nvim',
     --event = 'BufRead', -- Use a valid event like 'BufRead' for lazy loading
     run = 'cd ~/.local/share/nvim/site/pack/packer/start/avante.nvim && make', -- required build
     config = function()
@@ -237,6 +257,13 @@ return require('packer').startup(function()
           require('render-markdown').setup({
             file_types = { 'markdown', 'Avante' },
           })
+          -- a convenient keymap to toggle the Big-O pane
+          vim.keymap.set(
+            'n',
+            '<leader>abo',
+            function() require('avante.bigo').toggle() end,
+            { desc = '☢ Big-O operator pane' }
+          )
         end,
       },
     },
