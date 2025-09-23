@@ -5,6 +5,9 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim'     -- Packer can manage itself
+  -- system
+  use 'neovim/nvim-lspconfig'
+  -- style
   use 'Soares/base16.nvim'
   use 'famiu/nvim-reload'          -- easy reloading  after editing vim configuration
   use "b0o/mapx.nvim"              -- easier mapping settings
@@ -32,7 +35,6 @@ return require('packer').startup(function()
   use 'bfredl/nvim-ipy'
   use 'simrat39/symbols-outline.nvim'      -- symbol viewer
   use 'mhinz/vim-startify'                 -- cool vim startup screen
-  use 'merrickluo/lsp-tailwindcss'         -- tailwind completion and rule preview
   -- use 'yaegassy/coc-tailwindcss3' -- tailwind completion and rule preview
   use 'tomlion/vim-solidity'
 
@@ -158,29 +160,28 @@ return require('packer').startup(function()
   -- ╭──────────────────────────────────────────────────────────────╮
   -- │  LSP and external tooling installer (Mason)                 │
   -- ╰──────────────────────────────────────────────────────────────╯
+use {
+  'neovim/nvim-lspconfig'
+}
+use {
+  'williamboman/mason.nvim'
+}
+use {
+  'williamboman/mason-lspconfig.nvim',
+  requires = { 'neovim/nvim-lspconfig' }
+}
+use {
+  'simrat39/rust-tools.nvim',
+  requires = { 'neovim/nvim-lspconfig', 'williamboman/mason-lspconfig.nvim' }
+}
+-- For Tailwind LSP wrapper plugins (if used), same pattern
+use {
+  'tailwindlabs/tailwindcss-language-server',  -- if this is a plugin
+  -- or your plugin doing enhancements/etc.
+  requires = { 'neovim/nvim-lspconfig' }
+}
 
-  -- 1. Mason itself – provides the :Mason UI and installs binaries
-  use {
-    'williamboman/mason.nvim',
-    config = function()
-      require('mason').setup()
-    end,
-  }
-
-  -- 2. Bridge that makes the servers installed by Mason available
-  --    to nvim-lspconfig *and* automatically adds Mason's bin dir
-  --    to PATH.
-  use {
-    'williamboman/mason-lspconfig.nvim',
-    after = 'mason.nvim',
-    config = function()
-      require('mason-lspconfig').setup()
-    end,
-  }
-
-  -- 3. Core LSP client configs (we configure individual servers in lua/lsp.lua)
-  use 'neovim/nvim-lspconfig'
-
+  -- autocomplete
   use({
     "hrsh7th/nvim-cmp", -- use for automcompletion engine
     requires = {

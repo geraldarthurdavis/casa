@@ -1,6 +1,9 @@
 # set global editor
 export EDITOR=nvim
 
+# set global ai
+export AI=claude
+
 # ensure kitty colors work with vim and tmux
 export TERM='xterm-kitty'
 

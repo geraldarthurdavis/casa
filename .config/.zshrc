@@ -54,6 +54,7 @@ alias twerk="cd $CASA_CONFIG && edit $CASA_CONFIG/README.md"
 # editor
 alias v="$EDITOR"
 alias edit="$EDITOR"
+alias ai="$AI"
 alias vim="$EDITOR"
 alias nvim="$EDITOR"
 alias nano="$EDITOR"
@@ -178,10 +179,12 @@ alias pip="pip3"
 
 # engi
 alias engi="pipenv run engi "
-alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/docs/PRODUCT.md" # edit engi
+alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/internal-docs/README.md" # edit engi
 alias ee=eengi
 alias gengi="cd $ENGI_MONOREPO_DIR" # go engi
 alias ge=gengi
+alias aiengi="cd $ENGI_MONOREPO_DIR && ai" # ai develop engi
+alias ae=aiengi
 
 # misc.
 alias sand="cd $SANDBOX_HOME"
@@ -219,3 +222,4 @@ export LC_TYPE=en_US.UTF-8
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+

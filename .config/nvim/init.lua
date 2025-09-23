@@ -8,7 +8,7 @@ require('providers')      -- neovim python providers
 require('maps')           -- keybindings
 require('statusline')     -- custom statusline
 require('plugins')        -- packer plugins
-require('lsp')            -- language servers
+require('_lsp')            -- language servers
 require('autocomplete')   -- completion
 require('snippets')       -- snippet settings
 require('search')         -- searching
@@ -41,3 +41,4 @@ require('highlights')
 require('editing')
 require('winbar')
 require('buffers')
+require('scroll')
