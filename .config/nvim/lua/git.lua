@@ -2,7 +2,7 @@
 Behaviors:
 - Centralizes git commit completion and Diffview integration, lazily loading `diffview.nvim` when needed.
 - Defines `:GitDiff [rev]`, `:GitDiffIndex`, `:GitDiffWorkingTree`, `:GitDiffDefaultBranch`, `:GitDiffFileHistory`, `:GitDiffHistory`, and `:GitDiffClose`.
-- Maps `<leader>gd/gb/gD/gf/gh/gq` to the live worktree diff, inferred default-branch diff, explicit worktree diff, current-file history, repo history, and close; Diffview panes also get `dq` and `<leader>dq`.
+- Maps `<leader>gd/gb/gD/gf/gh/gq` to the live worktree diff, inferred default-branch diff, explicit worktree diff, current-file history, repo history, and close; Diffview panes also get `[c/]c` for previous/next hunk and `dq` and `<leader>dq`.
 - Restores the original tab/window/buffer on close and infers the default branch from `origin/HEAD`, cached remote metadata, or common branch names.
 ]]
 -- git + vim 💕
@@ -131,6 +131,41 @@ local function preferred_return_buffer()
       return buf
     end
   end
+end
+
+local function preferred_diff_window()
+  local current = vim.api.nvim_get_current_win()
+  if vim.api.nvim_win_is_valid(current) and vim.wo[current].diff then
+    return current
+  end
+
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(vim.api.nvim_get_current_tabpage())) do
+    if vim.api.nvim_win_is_valid(win) and vim.wo[win].diff then
+      return win
+    end
+  end
+end
+
+local function jump_diff_change(keys)
+  local target = preferred_diff_window()
+  if not target then
+    vim.notify('No diff buffer is open in the current Diffview.', vim.log.levels.WARN)
+    return
+  end
+
+  if target ~= vim.api.nvim_get_current_win() then
+    pcall(vim.api.nvim_set_current_win, target)
+  end
+
+  vim.cmd.normal({ args = { keys }, bang = true })
+end
+
+local function jump_to_prev_diff_change()
+  jump_diff_change('[c')
+end
+
+local function jump_to_next_diff_change()
+  jump_diff_change(']c')
 end
 
 local function capture_diffview_return_state()
@@ -309,14 +344,20 @@ function M.setup_diffview()
     },
     keymaps = {
       view = {
+        { 'n', '[c', jump_to_prev_diff_change, { desc = 'Jump to previous diff change' } },
+        { 'n', ']c', jump_to_next_diff_change, { desc = 'Jump to next diff change' } },
         { 'n', 'dq', close_diffview, { desc = 'Close diff view' } },
         { 'n', '<leader>dq', close_diffview, { desc = 'Close diff view' } },
       },
       file_panel = {
+        { 'n', '[c', jump_to_prev_diff_change, { desc = 'Jump to previous diff change' } },
+        { 'n', ']c', jump_to_next_diff_change, { desc = 'Jump to next diff change' } },
         { 'n', 'dq', close_diffview, { desc = 'Close diff view' } },
         { 'n', '<leader>dq', close_diffview, { desc = 'Close diff view' } },
       },
       file_history_panel = {
+        { 'n', '[c', jump_to_prev_diff_change, { desc = 'Jump to previous diff change' } },
+        { 'n', ']c', jump_to_next_diff_change, { desc = 'Jump to next diff change' } },
         { 'n', 'dq', close_diffview, { desc = 'Close diff view' } },
         { 'n', '<leader>dq', close_diffview, { desc = 'Close diff view' } },
       },

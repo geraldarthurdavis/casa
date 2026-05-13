@@ -20,6 +20,8 @@ vim.opt.foldmethod = 'syntax'
 -- zM: Close all folds in buffer
 
 -- Additional fold navigation with centering
+map('n', '<leader>zo', 'zo', options)   -- Open current fold under cursor
+map('n', '<leader>zc', 'zc', options)   -- Close current fold under cursor
 map('n', '<leader>zj', 'zjzz', options) -- Move to next fold and center screen
 map('n', '<leader>zk', 'zkzz', options) -- Move to previous fold and center screen
 map('n', '<leader>z[', '[zzz', options) -- Move to start of open fold and center
