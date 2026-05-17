@@ -146,6 +146,10 @@ local function preferred_diff_window()
   end
 end
 
+local function did_cursor_move(before, after)
+  return before[1] ~= after[1] or before[2] ~= after[2]
+end
+
 local function jump_diff_change(keys)
   local target = preferred_diff_window()
   if not target then
@@ -157,7 +161,26 @@ local function jump_diff_change(keys)
     pcall(vim.api.nvim_set_current_win, target)
   end
 
+  local start_cursor = vim.api.nvim_win_get_cursor(target)
   vim.cmd.normal({ args = { keys }, bang = true })
+
+  local next_cursor = vim.api.nvim_win_get_cursor(target)
+  if did_cursor_move(start_cursor, next_cursor) then
+    return
+  end
+
+  local wrap_position = keys == '[c' and 'G' or 'gg'
+  vim.cmd.normal({ args = { wrap_position }, bang = true })
+
+  local wrapped_start_cursor = vim.api.nvim_win_get_cursor(target)
+  vim.cmd.normal({ args = { keys }, bang = true })
+
+  local wrapped_cursor = vim.api.nvim_win_get_cursor(target)
+  if did_cursor_move(wrapped_start_cursor, wrapped_cursor) then
+    return
+  end
+
+  pcall(vim.api.nvim_win_set_cursor, target, start_cursor)
 end
 
 local function jump_to_prev_diff_change()
