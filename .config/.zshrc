@@ -371,14 +371,14 @@ fi
 alias python="python3"
 alias pip="pip3"
 
-# engi
-alias engi="pipenv run engi "
-alias eengi="cd $ENGI_MONOREPO_DIR && edit $ENGI_MONOREPO_DIR/internal-docs/README.md" # edit engi
-alias ee=eengi
-alias gengi="cd $ENGI_MONOREPO_DIR" # go engi
-alias ge=gengi
-alias aiengi="cd $ENGI_MONOREPO_DIR && ai" # ai develop engi
-alias ae=aiengi
+# bitcode
+alias bitcode="pipenv run bitcode "
+alias ebitcode="cd $bitcode_MONOREPO_DIR && edit $bitcode_MONOREPO_DIR/internal-docs/README.md" # edit bitcode
+alias eb=ebitcode
+alias gbitcode="cd $bitcode_MONOREPO_DIR" # go bitcode
+alias gb=gbitcode
+alias aibitcode="cd $bitcode_MONOREPO_DIR && ai" # ai develop bitcode
+alias ab=aibitcode
 
 # misc.
 alias sand="cd $SANDBOX_HOME"
@@ -386,8 +386,8 @@ alias sand="cd $SANDBOX_HOME"
 export PATH="/opt/homebrew/opt/icu4c/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c/sbin:$PATH"
 
-#alias engienv="source /Users/g/.local/share/virtualenvs/cli-L_QUJPw1/bin/activate"
-#alias engi="PIPENV_VERBOSITY=-1 pipenv run engi"
+#alias bitcodeenv="source /Users/g/.local/share/virtualenvs/cli-L_QUJPw1/bin/activate"
+#alias bitcode="PIPENV_VERBOSITY=-1 pipenv run bitcode"
 
 # https://igor.moomers.org/navigating-arch-on-osx
 alias brow='arch --x86_64 /usr/local/homebrew/bin/brew'
@@ -419,3 +419,9 @@ export LC_TYPE=en_US.UTF-8
 
 # OpenClaw Completion
 source "/Users/garrettmaring/.openclaw/completions/openclaw.zsh"
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<

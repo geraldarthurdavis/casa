@@ -48,7 +48,7 @@ This setup is key for using hjkl navigation for all panes in a window seamlessly
 -- Latest --
 
 ```log
--2)][☁️  g@engi.network][⏱ 11s]
+-2)][☁️  gd@bitcode.exchange][⏱ 11s]
 ❯ pstree -p 48933    
 ps -ef --forest | grep 48933
 -+= 00001 root /sbin/launchd

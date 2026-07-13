@@ -26,8 +26,8 @@ prepend_path() {
 export CASA_CONFIG="${CASA_CONFIG:-$DEVELOPER_HOME/casa}"
 export CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
-# engi
-export ENGI_MONOREPO_DIR="${ENGI_MONOREPO_DIR:-$DEVELOPER_HOME/ENGI}"
+# bitcode
+export bitcode_MONOREPO_DIR="${bitcode_MONOREPO_DIR:-$DEVELOPER_HOME/bitcode}"
 
 # nvm
 export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
