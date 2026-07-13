@@ -2,6 +2,8 @@
 Behaviors:
 - Sets `foldmethod=syntax` in this simpler fold layer.
 - Maps `<leader>ch` to clear search highlighting and `<leader>zj/zk/z[/z]` to centered fold navigation.
+- Maps `<leader>zo/zc/zR` to open or close folds, including opening all folds in the file.
+
 - Maps `<leader>z+` and `<leader>z-` to raise or lower `foldlevel` through local helper functions.
 ]]
 local map = vim.api.nvim_set_keymap
@@ -20,6 +22,8 @@ vim.opt.foldmethod = 'syntax'
 -- zM: Close all folds in buffer
 
 -- Additional fold navigation with centering
+map('n', '<leader>zR', 'zR', options)   -- Open all folds in file
+
 map('n', '<leader>zo', 'zo', options)   -- Open current fold under cursor
 map('n', '<leader>zc', 'zc', options)   -- Close current fold under cursor
 map('n', '<leader>zj', 'zjzz', options) -- Move to next fold and center screen

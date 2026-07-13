@@ -1,6 +1,7 @@
 --[[
 Behaviors:
 - Configures Trouble as the diagnostics/location-list UI with custom fold/severity icons and panel action keys such as `q`, `<esc>`, `r`, `<cr>`, `<tab>`, `<c-x>`, and `<c-v>`.
+- Opens Trouble even when there are no results (`open_no_results = true`).
 - Maps `<leader>dc/dd/dw/do/dl/df/dr` to close Trouble or toggle diagnostics, workspace diagnostics, document diagnostics, loclist, quickfix, and LSP references.
 - Maps `<leader>dy` to copy the current buffer's diagnostics to the clipboard in a readable multi-line format.
 ]]
@@ -23,6 +24,7 @@ trouble.setup({
   auto_close = false,
   auto_preview = true,
   auto_fold = false,
+  open_no_results = true, -- open Trouble even when the list is empty
   action_keys = {
     close = "q",
     cancel = "<esc>",
