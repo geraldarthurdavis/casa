@@ -10,10 +10,7 @@ Behaviors:
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
-  local local_avante_path = vim.fn.expand("~/Developer/engi/engi.nvim")
-  local has_local_avante = vim.fn.isdirectory(local_avante_path) == 1
-
-  use 'wbthomason/packer.nvim'     -- Packer can manage itself
+  use 'wbthomason/packer.nvim' -- Packer can manage itself
   -- system
   use 'neovim/nvim-lspconfig'
   -- style
@@ -34,43 +31,24 @@ return require('packer').startup(function()
   use { 'tpope/vim-dispatch', opt = true, cmd = { 'Dispatch', 'Make', 'Focus', 'Start' } }
   use 'tpope/vim-surround'
   use 'tpope/vim-unimpaired'
-  use 'preservim/nerdcommenter'            -- commenting commenting
-  use 'mfussenegger/nvim-dap'              -- debugger, breakpoints, step-through
-  use 'simrat39/rust-tools.nvim'           -- Rust debugging
-  use 'edluffy/specs.nvim'                 -- animate cursor when moving
-  use 'kyazdani42/nvim-web-devicons'       -- nicer icons for file trees, diagnostic lists, etc.
-  use 'jose-elias-alvarez/typescript.nvim' -- typescript
-  use 'junegunn/goyo.vim'                  -- writing in vim
+  use 'preservim/nerdcommenter'       -- commenting commenting
+  use 'mfussenegger/nvim-dap'         -- debugger, breakpoints, step-through
+  use 'simrat39/rust-tools.nvim'      -- Rust debugging
+  use 'edluffy/specs.nvim'            -- animate cursor when moving
+  use 'kyazdani42/nvim-web-devicons'  -- nicer icons for file trees, diagnostic lists, etc.
+  use 'junegunn/goyo.vim'             -- writing in vim
   use 'bfredl/nvim-ipy'
-  use 'simrat39/symbols-outline.nvim'      -- symbol viewer
-  use 'mhinz/vim-startify'                 -- cool vim startup screen
+  use 'simrat39/symbols-outline.nvim' -- symbol viewer
+  use 'mhinz/vim-startify'            -- cool vim startup screen
   -- use 'yaegassy/coc-tailwindcss3' -- tailwind completion and rule preview
   use 'tomlion/vim-solidity'
-
-  -- easy motion (vimium style navigation)
-  use {
-    'phaazon/hop.nvim',
-    branch = 'v1', -- optional but strongly recommended
-    config = function()
-      -- you can configure Hop the way you like here; see :h hop-config
-      require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-    end
-  }
-
-  -- use 'JoosepAlviste/nvim-ts-context-commentstring' -- improve commenting in multi-langugage files (CSS-in-JS). is this working?
-
-  -- TODO: linting with ale?
-  --use {
-  --'w0rp/ale',
-  --ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex'},
-  --cmd = 'ALEEnable',
-  --config = 'vim.cmd[[ALEEnable]]'
-  --}
-
-  -- TODO: hererocks breaking when uncommented
-  --use_rocks 'penlight'                                                                            -- helpful Lua functions for common programming patterns
-  --use_rocks 'lua-resty-http'                                                                      -- Lua http helpers
-  --use_rocks 'lpeg'                                                                                -- Lua regex helpers
+  use 'nvim-lua/plenary.nvim'
+  use 'MunifTanjim/nui.nvim'
+  use 'HakonHarnes/img-clip.nvim'
+  use 'MeanderingProgrammer/render-markdown.nvim'
+  use 'stevearc/dressing.nvim' -- for enhanced input UI
+  use 'folke/snacks.nvim'      -- for modern input UI
+  use 'yetone/avante.nvim'
 
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' } -- preview markdown files in a browser page
 
@@ -121,14 +99,6 @@ return require('packer').startup(function()
   -- syntax highlighting, refactoring
   use 'nvim-treesitter/nvim-treesitter'
 
-  use {
-    "ThePrimeagen/refactoring.nvim",
-    requires = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-treesitter/nvim-treesitter" }
-    }
-  }
-
   -- searching
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.6',
@@ -143,18 +113,18 @@ return require('packer').startup(function()
     config = function()
       require('treesitter-context').setup(require('winbar'))
     end,
-  }                                                                -- sticky syntax context at top of window
+  } -- sticky syntax context at top of window
 
   -- ╭──────────────────────────────────────────────────────────────╮
   -- │  LSP and external tooling installer (Mason)                 │
   -- ╰──────────────────────────────────────────────────────────────╯
-use {
-  'williamboman/mason.nvim'
-}
-use {
-  'williamboman/mason-lspconfig.nvim',
-  requires = { 'neovim/nvim-lspconfig' }
-}
+  use {
+    'williamboman/mason.nvim'
+  }
+  use {
+    'williamboman/mason-lspconfig.nvim',
+    requires = { 'neovim/nvim-lspconfig' }
+  }
 
   -- autocomplete
   use({
@@ -205,9 +175,6 @@ use {
   }
   use 'hrsh7th/cmp-nvim-lsp-signature-help' -- use to automcomplete better function signatures
 
-
-  --use { 'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua' }
-
   -- use to add Rust/Cargo crates source to autocomplet
   use {
     'saecki/crates.nvim',
@@ -223,76 +190,36 @@ use {
     end,
   }
 
-  -- visualize registers & their content
-  use {
-    "tversteeg/registers.nvim",
-    config = function()
-      -- FIX: this errors on packer sync
-      --require("registers").setup()
-    end,
-  }
-
-  local avante_plugin = {
-    has_local_avante and local_avante_path or 'yetone/avante.nvim',
-    as = 'avante.nvim',
-    run = 'make',
-    config = function()
-      -- see ai.lua for config
-    end,
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'stevearc/dressing.nvim',
-      'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons',
-      "HakonHarnes/img-clip.nvim",
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        ft = { 'markdown', 'Avante' }, -- Lazy load based on file type
-        config = function()
-          require('render-markdown').setup({
-            file_types = { 'markdown', 'Avante' },
-          })
-          vim.keymap.set(
-            'n',
-            '<leader>abo',
-            function()
-              local ok, bigo = pcall(require, 'avante.bigo')
-              if ok then
-                bigo.toggle()
-                return
-              end
-
-              vim.notify("avante.bigo is unavailable in this Avante build", vim.log.levels.WARN)
-            end,
-            { desc = '☢ Big-O operator pane' }
-          )
-        end,
-      },
-    },
-  }
-
-  if not has_local_avante then
-    avante_plugin.branch = 'main'
-  end
-
-  use(avante_plugin)
-
-  -- ai code completion with avant
-  --
-  -- ai code completion with copilot
-  --use "github/copilot.vim"
+  -- TODOs
   --use {
-  --"Exafunction/codeium.nvim",
+  --"zbirenbaum/copilot.lua",
   --requires = {
-  --"nvim-lua/plenary.nvim",
-  --"hrsh7th/nvim-cmp",
+  --"copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
   --},
+  --cmd = "Copilot",
+  --event = "InsertEnter",
   --config = function()
-  --require("codeium").setup({})
-  ----vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-  ----vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-  ----vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
-  ----vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-  --end
+  --require("copilot").setup({})
+  --end,
   --}
+
+  --local local_avante_path = vim.fn.expand("~/Developer/avante.nvim/")
+  --local has_local_avante = vim.fn.isdirectory(local_avante_path) == 1
+  --
+  -- use 'JoosepAlviste/nvim-ts-context-commentstring' -- improve commenting in multi-langugage files (CSS-in-JS). is this working?
+
+  -- TODO: linting with ale?
+  --use {
+  --'w0rp/ale',
+  --ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex'},
+  --cmd = 'ALEEnable',
+  --config = 'vim.cmd[[ALEEnable]]'
+  --}
+
+  -- TODO: hererocks breaking when uncommented
+  --use_rocks 'penlight'                                                                            -- helpful Lua functions for common programming patterns
+  --use_rocks 'lua-resty-http'                                                                      -- Lua http helpers
+  --use_rocks 'lpeg'                                                                                -- Lua regex helpers
+  --
+  --use { 'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua' }
 end)

@@ -9,8 +9,12 @@ Behaviors:
 -- ai.lua (Consolidated)
 -- =======================
 --
-local map = vim.api.nvim_set_keymap
-local options = { noremap = true, silent = true }
+local keymap = vim.keymap.set
+local keymap_opts = { noremap = true, silent = true }
+
+local function map_avante(lhs, command, desc)
+  keymap("n", lhs, command, vim.tbl_extend("force", keymap_opts, { desc = desc }))
+end
 
 --------------------------------------------------------------------------------
 -- 1) Load Avante
@@ -27,8 +31,22 @@ if not has_avante then
   return
 end
 
--- By default Avante also has a mapping <leader>aa → :Avante, <leader>at → :AvanteToggle
-map('n', '<leader>ac', ':AvanteToggle<cr>', options) -- no close
+-- By default Avante also has some auto-keymaps, but we define a mnemonic leader menu here.
+map_avante("<leader>aa", "<cmd>AvanteAsk<cr>", "Avante ask")
+map_avante("<leader>ab", "<cmd>AvanteBuild<cr>", "Avante build")
+map_avante("<leader>ac", "<cmd>AvanteChat<cr>", "Avante chat")
+map_avante("<leader>acn", "<cmd>AvanteChatNew<cr>", "Avante chat new")
+map_avante("<leader>ah", "<cmd>AvanteHistory<cr>", "Avante history")
+map_avante("<leader>acl", "<cmd>AvanteClear<cr>", "Avante clear")
+map_avante("<leader>ae", "<cmd>AvanteEdit<cr>", "Avante edit")
+map_avante("<leader>af", "<cmd>AvanteFocus<cr>", "Avante focus")
+map_avante("<leader>ar", "<cmd>AvanteRefresh<cr>", "Avante refresh")
+map_avante("<leader>as", "<cmd>AvanteStop<cr>", "Avante stop")
+map_avante("<leader>ap", "<cmd>AvanteSwitchProvider<cr>", "Avante switch provider")
+map_avante("<leader>arm", "<cmd>AvanteShowRepoMap<cr>", "Avante repo map")
+map_avante("<leader>at", "<cmd>AvanteToggle<cr>", "Avante toggle")
+map_avante("<leader>am", "<cmd>AvanteModels<cr>", "Avante models")
+map_avante("<leader>asp", "<cmd>AvanteSwitchSelectorProvider<cr>", "Avante switch selector provider")
 
 --------------------------------------------------------------------------------
 -- 2) Make Avante buffers modifiable if needed
@@ -44,63 +62,21 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 3) Avante setup
 --------------------------------------------------------------------------------
 avante.setup({
-  provider = "openai",
-  cursor_applying_provider = 'groq',
+  provider = "claude",
   providers = {
-    openai = {
-      api_key_name = "OPENAI_API_KEY",
-      --endpoint = "https://api.openai.com/v1",
-      use_response_api = true,
-      model = "gpt-5.4",
-      extra_request_body = {
-        temperature = 0,
-        --max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
-        reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-      },
-    },
     claude = {
       api_key_name = "ANTHROPIC_API_KEY",
-      model = "claude-3-7-sonnet-latest",
-      extra_request_body = {
-        -- NON-THINKING TEMP:
-        temperature = 0.000069,
-      },
-      --thinking = {
-      --type = "enabled",
-      ----budget_tokens = 6000 -- Allocate 64K tokens for reasoning
-      --},
-      --disabled_tools = { "git_commit" },
-      --max_tokens = 64000, -- add for 3.7
-    },
-    gemini = {
-      api_key_name = "GEMINI_API_KEY",
-      --model = "gemini-2.0-pro-exp",
-      model = "gemini-2.5-pro-exp-03-25",
-      --model = 'gemini-2.0-flash-thinking-exp-01-21',
-    },
-    groq = { -- define groq provider
-      api_key_name = "GROQ_API_KEY",
-      endpoint = 'https://api.groq.com/openai/v1/',
-      model = 'llama-3.3-70b-versatile',
-      max_tokens = 32768, -- remember to increase this value, otherwise it will stop generating halfway
+      model = "claude-4-6-sonnet",
+      auth_type = "max",
     },
   },
   -- ui
   windows = {
     position = "left",
-    width = 32, -- The Avante sidebar width
+    width = 27, -- The Avante sidebar width
     input = {
-      height = 13,
+      height = 18,
     }
-  },
-  -- Additional config as you wish...
-  dual_boost = {
-    enabled = false,
-    first_provider = "openai",
-    second_provider = "claude",
-    prompt =
-    "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
-    timeout = 60000, -- Timeout in milliseconds
   },
   behaviour = {
     auto_suggestions = false, -- Experimental stage
@@ -111,7 +87,8 @@ avante.setup({
     minimize_diff = true,                    -- Whether to remove unchanged lines when applying a code block
     enable_token_counting = true,            -- Whether to enable token counting. Default to true.
     enable_cursor_planning_mode = false,     -- Whether to enable Cursor Planning Mode. Default to false.
-    --enable_claude_text_editor_tool_mode = true,
+    enable_fastapply = true,                 -- Enable Fast Apply feature
+    enable_claude_text_editor_tool_mode = true,
   },
 })
 
